@@ -6,4 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public interface GetTokenIdService {
     //String getTokenId(GetTokenIdBody getTokenIdBody);
     String getToken();
+    
+    
 }
