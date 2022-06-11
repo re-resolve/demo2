@@ -58,6 +58,10 @@ public class HttpPost
                 reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
                 result = reader.readLine();
             }
+            else{
+                reader = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
+                result = reader.readLine();
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -1,6 +1,6 @@
 package com.example.demo2.service.Impl;
 
-import com.example.demo2.common.Token;
+import com.example.demo2.common.GetSetToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,11 +8,19 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
 
 public class HttpGet {
     static Logger log = LoggerFactory.getLogger(HttpGet.class);
-
+    
+    public static String getResponseCode() {
+        return responseCode;
+    }
+    
+    public static void setResponseCode(String responseCode) {
+        HttpGet.responseCode = responseCode;
+    }
+    
+    public static String responseCode;
     /**
      * 向指定URL发送GET方法的请求
      *
@@ -31,7 +39,7 @@ public class HttpGet {
             connection = (HttpURLConnection) url.openConnection();
             // 设置连接方式：get
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("X-ACCESS-TOKEN", Token.getToken());
+            connection.setRequestProperty("X-ACCESS-TOKEN", GetSetToken.getToken());
 
             // 设置连接主机服务器的超时时间：15000毫秒
             connection.setConnectTimeout(15000);
@@ -41,6 +49,7 @@ public class HttpGet {
             connection.connect();
             // 通过connection连接，获取输入流
             if (connection.getResponseCode() == 200) {
+                //setResponseCode("200");
                 is = connection.getInputStream();
                 // 封装输入流is，并指定字符集
                 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
@@ -52,6 +61,15 @@ public class HttpGet {
                     sbf.append("\r\n");
                 }
                 result = sbf.toString();
+            }
+            else if(connection.getResponseCode() == 401){
+                //set返回码
+                setResponseCode("401");
+                //重新获取一次tokenid
+                new GetTokenIdServiceImpl().getToken();
+    
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
+                result = reader.readLine();
             }else{
                 is = connection.getErrorStream();
                 // 封装输入流is，并指定字符集

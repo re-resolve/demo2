@@ -1,6 +1,6 @@
 package com.example.demo2.controller;
 
-import com.example.demo2.common.Token;
+import com.example.demo2.common.GetSetToken;
 import com.example.demo2.dto.GetTokenIdBody;
 import com.example.demo2.service.GetTokenIdService;
 import org.slf4j.Logger;
@@ -22,8 +22,7 @@ public class GetTokenIdController {
         final Logger logger = LoggerFactory.getLogger(GetTokenIdController.class);
     
         String token = getTokenIdService.getToken();
-    
-        Token.setToken(token);
+        
     
         return token;
     }

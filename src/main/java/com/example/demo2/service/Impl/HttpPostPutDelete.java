@@ -1,6 +1,6 @@
 package com.example.demo2.service.Impl;
 
-import com.example.demo2.common.Token;
+import com.example.demo2.common.GetSetToken;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,6 +21,15 @@ import javax.net.ssl.X509TrustManager;
 
 public class HttpPostPutDelete
 {
+    public static String getResponseCode() {
+        return responseCode;
+    }
+    
+    public static void setResponseCode(String responseCode) {
+        HttpGet.responseCode = responseCode;
+    }
+    
+    public static String responseCode;
     /**
      * 华为请求接口
      * @param urlPath 华为请求后缀
@@ -49,7 +58,7 @@ public class HttpPostPutDelete
             conn.setDoOutput(true);
             conn.setDoInput(true);
             conn.setUseCaches(false);
-            conn.setRequestProperty("X-ACCESS-TOKEN", Token.getToken());
+            conn.setRequestProperty("X-ACCESS-TOKEN", GetSetToken.getToken());
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("Charset", "UTF-8");
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -67,7 +76,16 @@ public class HttpPostPutDelete
             if (conn.getResponseCode() == 200) {
                 reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
                 result = reader.readLine();
-            }else{
+            }
+            else if(conn.getResponseCode() == 401){
+                setResponseCode("401");
+                //重新获取一次tokenid
+                String tokenid = new GetTokenIdServiceImpl().getToken();
+    
+                reader = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
+                result = reader.readLine();
+            }
+            else{
                 reader = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
                 result = reader.readLine();
             }

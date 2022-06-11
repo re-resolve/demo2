@@ -1,6 +1,7 @@
 package com.example.demo2.common;
 
 public interface ResultCode {
+    String SYSTEM_SUCCESS="00000";
     String SYSTEM_ERROR_GET_TOKENID ="10001";
     String SYSTEM_ERROR_GET_TOKENID_NAME_NULL ="10001";
     String SYSTEM_ERROR_GET_TOKENID_NAME_SIZE ="10002";

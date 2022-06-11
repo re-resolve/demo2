@@ -1,6 +1,6 @@
 package com.example.demo2.common;
 
-public class Token {
+public class GetSetToken {
     private static String token;
     
     public static String getToken() {
@@ -8,6 +8,6 @@ public class Token {
     }
     
     public static void setToken(String token) {
-        Token.token = token;
+        GetSetToken.token = token;
     }
 }

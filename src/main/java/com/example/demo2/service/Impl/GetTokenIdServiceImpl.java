@@ -1,35 +1,14 @@
 package com.example.demo2.service.Impl;
 
-import com.example.demo2.dto.GetTokenIdBody;
+import com.example.demo2.common.GetSetToken;
 import com.example.demo2.dto.Token;
 import com.example.demo2.service.GetTokenIdService;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.huawei.cloudcampus.api.ApiClient;
-import com.huawei.cloudcampus.api.ApiException;
-import com.huawei.cloudcampus.api.JSON;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GetTokenIdServiceImpl implements GetTokenIdService {
-
-//    @Override
-//    public String getTokenId(GetTokenIdBody getTokenIdBody){
-//        String tenantName = getTokenIdBody.getUserName();
-//        String tenantPwd = getTokenIdBody.getPassword();
-//        String host = "cn2.naas.huaweicloud.com";
-//        String port = "18002";
-//        //String url=getTokenIdBody.getUrl();
-//        ApiClient apiClient = new ApiClient();
-//        apiClient.setTenantPwd(tenantPwd);
-//        apiClient.setTenantName(tenantName);
-//        apiClient.setHost(host);
-//        apiClient.setPort(port);
-//
-//        return apiClient.getTokenId();
-//    }
-    
     /**
      *
      * @return tokenid
@@ -45,12 +24,18 @@ public class GetTokenIdServiceImpl implements GetTokenIdService {
         re.addProperty("password",tenantPwd);
 
         String result = HttpPost.doPostToJson(url,re.toString());
-    
         Gson gson = new Gson();
         Token token = gson.fromJson(result, Token.class);
         //System.out.println(token.getData().getToken_id());
-    
-    
-        return token.getData().getToken_id();
+        String tokenid=token.getData().getToken_id();
+        int i=1;
+        if(tokenid.isBlank()&&i==1){
+            String result1 = HttpPost.doPostToJson(url,re.toString());
+            Gson gson1 = new Gson();
+            Token token1 = gson.fromJson(result1, Token.class);
+            i++;
+        }
+        GetSetToken.setToken(tokenid);
+        return tokenid;
     }
 }

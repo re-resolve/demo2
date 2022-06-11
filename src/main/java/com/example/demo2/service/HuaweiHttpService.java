@@ -1,7 +1,7 @@
 package com.example.demo2.service;
 
-import com.example.demo2.dto.Huawei;
+import com.example.demo2.dto.HuaweiGetToken;
 
 public interface HuaweiHttpService {
-    String doHuaweiHttp(Huawei huawei);
+    String doHuaweiHttp(HuaweiGetToken huawei);
 }
