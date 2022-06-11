@@ -29,7 +29,7 @@ public class HttpPostPutDelete
      * @return
      */
     public static String doPostToJson(String urlPath,String method, String Json) {
-        
+
         String result = "";
         BufferedReader reader = null;
         HttpURLConnection conn = null;
@@ -44,7 +44,7 @@ public class HttpPostPutDelete
             else {
                 conn = (HttpURLConnection) url.openConnection();
             }
-            
+
             conn.setRequestMethod(method);
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -63,12 +63,15 @@ public class HttpPostPutDelete
                 outwritestream.flush();
                 outwritestream.close();
             }
-            
+
             if (conn.getResponseCode() == 200) {
                 reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
                 result = reader.readLine();
+            }else{
+                reader = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
+                result = reader.readLine();
             }
-            
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -83,36 +86,36 @@ public class HttpPostPutDelete
                 }
             }
         }
-    
+
         return result;
     }
-    
+
     final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier()
     {
         public boolean verify(String arg0, SSLSession arg1) {
             return true;
         }
     };
-    
+
     public static void trustAllHosts() {
         TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager()
         {
-            
+
             public X509Certificate[] getAcceptedIssuers() {
                 return new X509Certificate[] {};
             }
-            
+
             public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-            
+
             }
-            
+
             public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-            
+
             }
         }
-        
+
         };
-        
+
         try {
             SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(null, trustAllCerts, new SecureRandom());
@@ -121,7 +124,7 @@ public class HttpPostPutDelete
         catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
-    
+
 }

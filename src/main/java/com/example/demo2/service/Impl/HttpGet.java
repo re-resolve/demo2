@@ -12,7 +12,7 @@ import java.util.*;
 
 public class HttpGet {
     static Logger log = LoggerFactory.getLogger(HttpGet.class);
-    
+
     /**
      * 向指定URL发送GET方法的请求
      *
@@ -32,7 +32,7 @@ public class HttpGet {
             // 设置连接方式：get
             connection.setRequestMethod("GET");
             connection.setRequestProperty("X-ACCESS-TOKEN", Token.getToken());
-    
+
             // 设置连接主机服务器的超时时间：15000毫秒
             connection.setConnectTimeout(15000);
             // 设置读取远程返回的数据时间：60000毫秒
@@ -42,6 +42,18 @@ public class HttpGet {
             // 通过connection连接，获取输入流
             if (connection.getResponseCode() == 200) {
                 is = connection.getInputStream();
+                // 封装输入流is，并指定字符集
+                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                // 存放数据
+                StringBuffer sbf = new StringBuffer();
+                String temp = null;
+                while ((temp = br.readLine()) != null) {
+                    sbf.append(temp);
+                    sbf.append("\r\n");
+                }
+                result = sbf.toString();
+            }else{
+                is = connection.getErrorStream();
                 // 封装输入流is，并指定字符集
                 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
                 // 存放数据
@@ -66,7 +78,7 @@ public class HttpGet {
                     e.printStackTrace();
                 }
             }
-            
+
             if (null != is) {
                 try {
                     is.close();
@@ -74,7 +86,7 @@ public class HttpGet {
                     e.printStackTrace();
                 }
             }
-            
+
             connection.disconnect();// 关闭远程连接
         }
         return result;
