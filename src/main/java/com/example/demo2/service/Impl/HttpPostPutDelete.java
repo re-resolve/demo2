@@ -74,6 +74,7 @@ public class HttpPostPutDelete
             }
 
             if (conn.getResponseCode() == 200) {
+                setResponseCode("200");
                 reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
                 result = reader.readLine();
             }
@@ -86,6 +87,7 @@ public class HttpPostPutDelete
                 result = reader.readLine();
             }
             else{
+                setResponseCode("1");
                 reader = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
                 result = reader.readLine();
             }

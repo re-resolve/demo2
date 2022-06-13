@@ -40,7 +40,7 @@ public class HttpGet {
             // 设置连接方式：get
             connection.setRequestMethod("GET");
             connection.setRequestProperty("X-ACCESS-TOKEN", GetSetToken.getToken());
-
+            
             // 设置连接主机服务器的超时时间：15000毫秒
             connection.setConnectTimeout(15000);
             // 设置读取远程返回的数据时间：60000毫秒
@@ -49,7 +49,7 @@ public class HttpGet {
             connection.connect();
             // 通过connection连接，获取输入流
             if (connection.getResponseCode() == 200) {
-                //setResponseCode("200");
+                setResponseCode("200");
                 is = connection.getInputStream();
                 // 封装输入流is，并指定字符集
                 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
@@ -71,6 +71,7 @@ public class HttpGet {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
                 result = reader.readLine();
             }else{
+                setResponseCode("1");
                 is = connection.getErrorStream();
                 // 封装输入流is，并指定字符集
                 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));

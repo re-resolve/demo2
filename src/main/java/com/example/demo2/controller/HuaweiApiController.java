@@ -21,6 +21,7 @@ public class HuaweiApiController {
     
     @PostMapping()
     public String dohttp(@RequestBody HuaweiGetToken huawei){
+        huawei.setUrl("https://cn2.naas.huaweicloud.com:18002"+huawei.getUrl());
         //日志输出
         final Logger logger= LoggerFactory.getLogger(HuaweiApiController.class);
         if(huawei.getUrl().isBlank()){

@@ -21,9 +21,10 @@ public class HuaweiHttpServiceImpl implements HuaweiHttpService {
         }
         else{
             res = HttpPostPutDelete.doPostToJson(huawei.getUrl(),method,huawei.getData());
-            if(HttpPostPutDelete.getResponseCode().equals("401")){
+            if(Objects.equals(HttpPostPutDelete.getResponseCode(),"401")){
                 res = HttpPostPutDelete.doPostToJson(huawei.getUrl(),method,huawei.getData());
             }
+            System.out.println(HttpPostPutDelete.getResponseCode());
         }
         return res;
     }
