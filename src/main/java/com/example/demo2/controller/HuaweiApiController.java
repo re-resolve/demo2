@@ -4,6 +4,7 @@ package com.example.demo2.controller;
 import com.example.demo2.common.*;
 import com.example.demo2.dto.HuaweiGetToken;
 
+import com.example.demo2.mapper.BackgroundLoginMapper;
 import com.example.demo2.service.HuaweiHttpService;
 
 import com.example.demo2.vo.ResponseResult;
@@ -16,12 +17,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+
 @RestController
 @RequestMapping("/huaweiapi")
 public class HuaweiApiController {
     @Autowired
     private HuaweiHttpService huaweiHttpService;
-    
+    @Resource
+    BackgroundLoginMapper backgroundLoginMapper;
+    public Boolean search(String name){
+        if(backgroundLoginMapper.search(name).equals(1)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     @PostMapping()
     public ResponseResult dohttp(@RequestBody HuaweiGetToken huawei){
         if(huawei.getToken().isBlank()){
@@ -31,7 +43,7 @@ public class HuaweiApiController {
         else{
             //校验token
             String name=new Verify().parser(huawei.getToken(), new CreateToken().getSignature());
-            if(new BackgroundController().search(name))
+            if(search(name))
             {
                 huawei.setUrl("https://cn2.naas.huaweicloud.com:18002"+huawei.getUrl());
                 //日志输出
