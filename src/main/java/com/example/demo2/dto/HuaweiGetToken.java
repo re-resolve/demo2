@@ -8,5 +8,6 @@ public class HuaweiGetToken {
     private String url;
     private String method;
     private String data;
+    private String token;
     
 }

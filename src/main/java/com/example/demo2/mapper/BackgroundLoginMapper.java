@@ -1,6 +1,6 @@
 package com.example.demo2.mapper;
 
-import com.example.demo2.entity.BackgroundLogin;
+import com.example.demo2.dto.BackgroundLogin;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
