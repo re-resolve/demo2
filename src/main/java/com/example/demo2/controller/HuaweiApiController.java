@@ -26,6 +26,12 @@ public class HuaweiApiController {
     private HuaweiHttpService huaweiHttpService;
     @Resource
     BackgroundLoginMapper backgroundLoginMapper;
+    
+    /**
+     * 判断name是否存在数据表中
+     * @param name
+     * @return
+     */
     public Boolean search(String name){
         if(backgroundLoginMapper.search(name).equals(1)){
             return true;

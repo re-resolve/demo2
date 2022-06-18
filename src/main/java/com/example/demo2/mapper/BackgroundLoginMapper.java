@@ -11,7 +11,7 @@ import java.util.List;
 public interface BackgroundLoginMapper {
     @Update("INSERT INTO background (name,pwd) VALUES (#{name},#{pwd});")
     @Transactional
-    void create(BackgroundLogin backgroundLogin);
+    void create(String name,String pwd);
     
     @Select("select exists (SELECT * from background where name=#{name}); ")
     @Transactional
@@ -19,7 +19,7 @@ public interface BackgroundLoginMapper {
     
     @Select("select exists (SELECT * from background where name=#{name} and pwd=#{pwd}); ")
     @Transactional
-    Boolean login(BackgroundLogin backgroundLogin);
+    Boolean login(String name,String pwd);
     
     @Delete("delete from background where name=#{name} ;")
     @Transactional

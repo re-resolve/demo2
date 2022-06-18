@@ -6,6 +6,7 @@ import com.example.demo2.dto.BackgroundLogin;
 import com.example.demo2.mapper.BackgroundLoginMapper;
 import com.example.demo2.vo.ResponseResult;
 import com.example.demo2.vo.ResponseResultFactory;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -39,7 +40,9 @@ public class BackgroundController {
             return  responseResult;
         }
         else{
-            backgroundLoginMapper.create(backgroundLogin);
+            //md5加密
+            String md5Password = DigestUtils.md5DigestAsHex(backgroundLogin.getPwd().getBytes());
+            backgroundLoginMapper.create(backgroundLogin.getName(),md5Password);
             ResponseResult responseResult= ResponseResultFactory.buildResponseResult(ResultCode.BACKGROUND_LOGON_SUCCESS,"created successfully");
     
             return  responseResult;
@@ -50,13 +53,16 @@ public class BackgroundController {
     
     @PostMapping("/login")//后台账号登录
     public ResponseResult Login(@RequestBody BackgroundLogin backgroundLogin){
-        if(backgroundLoginMapper.login(backgroundLogin).equals(true)){
+        //md5加密
+        String md5Password = DigestUtils.md5DigestAsHex(backgroundLogin.getPwd().getBytes());
+        backgroundLoginMapper.create(backgroundLogin.getName(),md5Password);
+        if(backgroundLoginMapper.login(backgroundLogin.getName(),md5Password).equals(true)){
             //生成一个token
             CreateToken createToken = new CreateToken();
             String token= createToken.jwt(backgroundLogin.getName());
             
             ResponseResult<String> responseResult= ResponseResultFactory.buildResponseResult(ResultCode.BACKGROUND_LOGIN_SUCCESS,"login successfully",token);
-            System.out.println("111 "+token);
+            //System.out.println(token);
             return  responseResult;
 //            return "login successfully";
         }
