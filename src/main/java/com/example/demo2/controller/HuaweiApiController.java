@@ -24,27 +24,34 @@ public class HuaweiApiController {
     
     @PostMapping()
     public ResponseResult dohttp(@RequestBody HuaweiGetToken huawei){
-        //校验token
-        String name=new Verify().parser(huawei.getToken(), new CreateToken().getSignature());
-        if(UserList.user.contains(name))
-        {
-            huawei.setUrl("https://cn2.naas.huaweicloud.com:18002"+huawei.getUrl());
-            //日志输出
-            final Logger logger= LoggerFactory.getLogger(HuaweiApiController.class);
-            if(huawei.getUrl().isBlank()){
-                logger.error("HuaweiApi url is NULLorEMPTY");
-                logger.info("param:  "+huawei);
-            }
-    
-            String res = huaweiHttpService.doHuaweiHttp(huawei);
-            ResponseResult<String> responseResult= ResponseResultFactory.buildResponseResult(ResultCode.SYSTEM_SUCCESS_TOKEN,"dohttp successfully",res);
-            System.out.println("111"+res);
+        if(huawei.getToken().isBlank()){
+            ResponseResult responseResult= ResponseResultFactory.buildResponseResult(ResultCode.SYSTEM_ERROR_TOKEN,"token is null");
             return responseResult;
         }
         else{
-            ResponseResult responseResult=ResponseResultFactory.buildResponseResult(ResultCode.SYSTEM_ERROR_TOKEN,"invalid token");
-            return responseResult;
+            //校验token
+            String name=new Verify().parser(huawei.getToken(), new CreateToken().getSignature());
+            if(new BackgroundController().search(name))
+            {
+                huawei.setUrl("https://cn2.naas.huaweicloud.com:18002"+huawei.getUrl());
+                //日志输出
+                final Logger logger= LoggerFactory.getLogger(HuaweiApiController.class);
+                if(huawei.getUrl().isBlank()){
+                    logger.error("HuaweiApi url is NULLorEMPTY");
+                    logger.info("param:  "+huawei);
+                }
+        
+                String res = huaweiHttpService.doHuaweiHttp(huawei);
+                ResponseResult<String> responseResult= ResponseResultFactory.buildResponseResult(ResultCode.SYSTEM_SUCCESS_TOKEN,"dohttp successfully",res);
+                System.out.println("111"+res);
+                return responseResult;
+            }
+            else{
+                ResponseResult responseResult=ResponseResultFactory.buildResponseResult(ResultCode.SYSTEM_ERROR_TOKEN,"invalid token");
+                return responseResult;
+            }
         }
+        
         
     }
 }

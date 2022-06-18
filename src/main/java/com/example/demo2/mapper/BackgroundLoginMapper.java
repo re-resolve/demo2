@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface BackgroundLoginMapper {
     @Update("INSERT INTO background (name,pwd) VALUES (#{name},#{pwd});")
     @Transactional
@@ -22,4 +24,5 @@ public interface BackgroundLoginMapper {
     @Delete("delete from background where name=#{name} ;")
     @Transactional
     Boolean delete(String name);
+    
 }
