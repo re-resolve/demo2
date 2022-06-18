@@ -21,12 +21,13 @@ import javax.net.ssl.X509TrustManager;
 
 public class HttpPostPutDelete
 {
+    
     public static String getResponseCode() {
         return responseCode;
     }
     
     public static void setResponseCode(String responseCode) {
-        HttpGet.responseCode = responseCode;
+        HttpPostPutDelete.responseCode = responseCode;
     }
     
     public static String responseCode;
