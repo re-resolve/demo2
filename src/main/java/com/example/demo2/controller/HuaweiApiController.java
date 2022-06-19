@@ -1,6 +1,7 @@
 package com.example.demo2.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo2.common.*;
 import com.example.demo2.dto.HuaweiGetToken;
 
@@ -62,6 +63,9 @@ public class HuaweiApiController {
                 huawei.setUrl("https://cn2.naas.huaweicloud.com:18002"+huawei.getUrl());
         
                 String res = huaweiHttpService.doHuaweiHttp(huawei);
+                //将string转为json返回给前端，因为现在整个responseResult是一个对象，将res转为json之后就可以嵌套对象
+                //JSONObject jsonObject = JSONObject.parseObject(res);
+                //ResponseResult<String> responseResult= ResponseResultFactory.buildResponseResult(ResultCode.SYSTEM_SUCCESS_TOKEN,"dohttp successfully",jsonObject);
                 ResponseResult<String> responseResult= ResponseResultFactory.buildResponseResult(ResultCode.SYSTEM_SUCCESS_TOKEN,"dohttp successfully",res);
                 logger.info("doHuaweiHttp success");
                 //System.out.println("111"+res);
