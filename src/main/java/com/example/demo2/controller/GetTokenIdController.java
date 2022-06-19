@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/tokenid")
+@RequestMapping("/tokenid/test")
 public class GetTokenIdController {
     @Autowired
     private GetTokenIdService getTokenIdService;
@@ -20,10 +20,8 @@ public class GetTokenIdController {
     @PostMapping()
     public String getTokenId(@RequestBody GetTokenIdBody getTokenIdBody){
         final Logger logger = LoggerFactory.getLogger(GetTokenIdController.class);
-    
         String token = getTokenIdService.getToken();
-        
-    
+        logger.info("test:get token");
         return token;
     }
 }
