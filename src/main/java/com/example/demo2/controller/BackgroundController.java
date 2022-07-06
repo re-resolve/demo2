@@ -70,20 +70,19 @@ public class BackgroundController {
         backgroundLoginMapper.create(backgroundLogin.getName(),md5Password);
         if(backgroundLoginMapper.login(backgroundLogin.getName(),md5Password).equals(true)){
             //生成一个token
-            CreateToken createToken = new CreateToken();
-            String token= createToken.jwt(backgroundLogin.getName());
+            CreateJWT createJWT = new CreateJWT();
+            String token= createJWT.jwt(backgroundLogin.getName());
             
             ResponseResult<String> responseResult= ResponseResultFactory.buildResponseResult(ResultCode.BACKGROUND_LOGIN_SUCCESS,"login successfully",token);
             logger.info("backgroundlogin : "+backgroundLogin.getName()+" success");
     
             return  responseResult;
-//            return "login successfully";
         }
         else{
             ResponseResult responseResult= ResponseResultFactory.buildResponseResult(ResultCode.BACKGROUND_LOGIN_FAIL,"login failed");
             logger.error("backgroundlogin failed");
             return  responseResult;
-//            return "login failed";
+
         }
     }
     
@@ -97,7 +96,7 @@ public class BackgroundController {
             return responseResult;
         }
         else{
-            String name=new Verify().parser(background.getToken(),new CreateToken().getSignature());
+            String name=new Verify().parser(background.getToken(),new CreateJWT().getSignature());
             if(search(name)){
                 logger.info("verify name success");
                 if(backgroundLoginMapper.delete(name).equals(true)){

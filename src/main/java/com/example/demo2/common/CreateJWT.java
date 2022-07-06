@@ -7,7 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import java.util.UUID;
 
-public class CreateToken {
+public class CreateJWT {
     private long time=1000*60*60*24;//单位是毫秒
     
     private final String signature="secret";

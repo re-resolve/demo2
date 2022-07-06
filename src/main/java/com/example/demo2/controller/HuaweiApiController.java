@@ -1,7 +1,6 @@
 package com.example.demo2.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.example.demo2.common.*;
 import com.example.demo2.dto.HuaweiGetToken;
 
@@ -53,7 +52,7 @@ public class HuaweiApiController {
         }
         else{
             //校验token
-            String name=new Verify().parser(huawei.getToken(), new CreateToken().getSignature());
+            String name=new Verify().parser(huawei.getToken(), new CreateJWT().getSignature());
             if(search(name))
             {
                 if(huawei.getUrl().isBlank()){
@@ -66,9 +65,10 @@ public class HuaweiApiController {
                 //将string转为json返回给前端，因为现在整个responseResult是一个对象，将res转为json之后就可以嵌套对象
                 //JSONObject jsonObject = JSONObject.parseObject(res);
                 //ResponseResult<String> responseResult= ResponseResultFactory.buildResponseResult(ResultCode.SYSTEM_SUCCESS_TOKEN,"dohttp successfully",jsonObject);
+                
                 ResponseResult<String> responseResult= ResponseResultFactory.buildResponseResult(ResultCode.SYSTEM_SUCCESS_TOKEN,"dohttp successfully",res);
                 logger.info("doHuaweiHttp success");
-                //System.out.println("111"+res);
+                
                 return responseResult;
             }
             else{
